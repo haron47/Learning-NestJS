@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Get, Injectable } from '@nestjs/common';
+import { get } from 'http';
+import { userInfo } from 'os';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  async getUser() {
+    return process.env.SECRETE;
   }
 }
