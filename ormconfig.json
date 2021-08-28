@@ -1,10 +1,25 @@
-{
-  "type": "mysql",
-  "host": "localhost",
-  "port": 3306,
-  "username": "root",
-  "password": "root",
-  "database": "sleact",
-  "entities": ["dist/src/entities/*{.ts,.js}"],
-  "synchronize": true
-}
+[
+  {
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "root",
+    "database": "sleact",
+    "entities": ["dist/entities/*.{ts,js}"],
+    "migrations": ["src/migration/*.js"],
+    "synchronize": false
+  },
+  {
+    "name": "seed",
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "root",
+    "database": "sleact",
+    "entities": ["src/entities/*.{ts,js}"],
+    "migrations": ["src/migration/*.js"],
+    "synchronize": false
+  }
+]
