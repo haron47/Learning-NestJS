@@ -11,6 +11,7 @@ import { ChannelsService } from './channels/channels.service';
 import { WorkspacesService } from './workspaces/workspaces.service';
 import { WorkspacesController } from './workspaces/workspaces.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Users } from './entities/Users';
 
 @Module({
   imports: [
