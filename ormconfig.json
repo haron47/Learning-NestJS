@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "root",
+  "database": "sleact",
+  "entities": ["dist/src/entities/*{.ts,.js}"],
+  "synchronize": true
+}
