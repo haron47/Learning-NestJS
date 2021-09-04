@@ -7,15 +7,17 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(Users) private usersRepository : Repository<Users>) {}
+  constructor(
+    @InjectRepository(Users) private usersRepository: Repository<Users>,
+  ) {}
 
-  async validateUser(email: string, password: string){
+  async validateUser(email: string, password: string) {
     const user = await this.usersRepository.findOne({
-        where:{email},
+      where: { email },
+      select: ['email', 'password', 'nickname', 'id'],
     });
-    console.log(email, password, user);
-    if(!user){
-        return null;
+    if (!user) {
+      return null;
     }
     const result = await bcrypt.compare(password, user.password);
     if (result) {

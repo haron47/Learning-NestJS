@@ -12,12 +12,15 @@ import { WorkspacesService } from './workspaces/workspaces.service';
 import { WorkspacesController } from './workspaces/workspaces.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/Users';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     TypeOrmModule.forRoot(),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [
     AppController,
