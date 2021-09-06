@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { channel } from 'diagnostics_channel';
 import { Repository } from 'typeorm';
 import { ChannelMembers } from '../entities/ChannelMembers';
 import { Channels } from '../entities/Channels';
@@ -9,16 +10,18 @@ import { Workspaces } from '../entities/Workspaces';
 
 @Injectable()
 export class WorkspacesService {
-  @InjectRepository(Workspaces)
-  private workspacesRepository: Repository<Workspaces>;
-  @InjectRepository(Channels)
-  private channelsRepository: Repository<Channels>;
-  @InjectRepository(WorkspaceMembers)
-  private workspaceMembersRepository: Repository<WorkspaceMembers>;
-  @InjectRepository(ChannelMembers)
-  private channelMembersRepository: Repository<ChannelMembers>;
-  @InjectRepository(Users)
-  private usersRepository: Repository<Users>;
+  constructor(
+    @InjectRepository(Workspaces)
+    private workspacesRepository: Repository<Workspaces>,
+    @InjectRepository(Channels)
+    private channelsRepository: Repository<Channels>,
+    @InjectRepository(WorkspaceMembers)
+    private workspaceMembersRepository: Repository<WorkspaceMembers>,
+    @InjectRepository(ChannelMembers)
+    private channelMembersRepository: Repository<ChannelMembers>,
+    @InjectRepository(Users)
+    private usersRepository: Repository<Users>,
+  ) {}
 
   async findById(id: number) {
     return this.workspacesRepository.findOne({ where: { id } });
@@ -62,5 +65,39 @@ export class WorkspacesService {
         url,
       })
       .getMany();
+  }
+
+  async createWorkspaceMembers(url: string, email: string) {
+    const workspace = await this.workspacesRepository
+      .createQueryBuilder('workspace')
+      .where('workspace.url = :url', { url })
+      .innerJoinAndSelect('workspace.Channels', 'channels')
+      .getOne();
+
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (!user) {
+      return null;
+    }
+
+    const workspaceMember = new WorkspaceMembers();
+    workspaceMember.WorkspaceId = workspace.id;
+    workspaceMember.UserId = user.id;
+    await this.workspaceMembersRepository.save(workspaceMember);
+    const channelMember = new ChannelMembers();
+    channelMember.ChannelId = workspace.Channels.find(
+      (v) => v.name === '일반',
+    ).id;
+    channelMember.UserId = user.id;
+    await this.channelMembersRepository.save(channelMember);
+  }
+
+  async getWorkspaceMember(url: string, id: number) {
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .innerJoin('user.Workspaces', 'workspaces', 'workspcaes.url = :url', {
+        url,
+      })
+      .getOne();
   }
 }

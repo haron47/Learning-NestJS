@@ -8,7 +8,8 @@
     "database": "sleact",
     "entities": ["dist/entities/*.{ts,js}"],
     "migrations": ["./src/migration/*.js"],
-    "synchronize": false
+    "synchronize": false,
+    "logging": true
   },
   {
     "name": "seed",
@@ -20,6 +21,7 @@
     "database": "sleact",
     "entities": ["src/entities/*.{ts,js}"],
     "migrations": ["./src/migration/*.js"],
-    "synchronize": false
+    "synchronize": false,
+    "logging": true
   }
 ]
