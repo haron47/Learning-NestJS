@@ -33,4 +33,6 @@ export class WorkspacesService {
       },
     });
   }
+
+  async createWorkspace(name: string, url: string, myId: number) {}
 }
