@@ -23,7 +23,6 @@ export class UsersService {
 
   getUsers() {}
 
-  @Transaction()
   async join(email: string, nickname: string, password: string) {
     const user = await this.usersRepository.findOne({ where: { email } });
     if (user) {
@@ -37,7 +36,7 @@ export class UsersService {
     });
     await this.workspaceMembersRepository.save({
       UserId: returned.id,
-      WorkspceId: 1,
+      WorkspaceId: 1,
     });
     await this.channelMembersRepository.save({
       UserId: returned.id,

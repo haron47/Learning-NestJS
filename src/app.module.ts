@@ -24,13 +24,8 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
     UsersModule,
     WorkspacesModule,
   ],
-  controllers: [
-    AppController,
-    DmsController,
-    ChannelsController,
-    WorkspacesController,
-  ],
-  providers: [AppService, DmsService, ChannelsService, WorkspacesService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

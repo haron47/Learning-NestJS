@@ -16,6 +16,7 @@ import { NotLoggedInGuard } from 'src/auth/not-logged-in.guard';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserDto } from 'src/common/dto/user.dto';
 import { UndefinedToNullInterceptor } from 'src/common/interceptors/undefinedToNull.interceptors';
+import { Users } from 'src/entities/Users';
 import { JoinRequestDto } from './dto/join.request.dto';
 import { UsersService } from './users.service';
 
@@ -30,7 +31,7 @@ export class UsersController {
   })
   @ApiOperation({ summary: '정보조회' })
   @Get()
-  getUsers(@User() user) {
+  getUsers(@User() user: JoinRequestDto) {
     return user || false;
   }
 
@@ -54,7 +55,7 @@ export class UsersController {
   @ApiOperation({ summary: '로그인' })
   @UseGuards(new LocalAuthGuard())
   @Post('login')
-  logIn(@User() user) {
+  logIn(@User() user: Users) {
     return user;
   }
 

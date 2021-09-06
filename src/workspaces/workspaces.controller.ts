@@ -7,7 +7,7 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { userInfo } from 'os';
 import { User } from 'src/common/decorators/user.decorator';
 import { Users } from 'src/entities/Users';
@@ -24,8 +24,10 @@ export class WorkspacesController {
     return this.workspacesService.findMyWorkspaces(user.id);
   }
 
+  @ApiOperation({ summary: '워크스페이스 만들기' })
   @Post()
-  createWorkspaces(@User() user: Users, @Body() body: CreateWorkspaceDto) {
+  async createWorkspace(@User() user: Users, @Body() body: CreateWorkspaceDto) {
+    console.log(user);
     return this.workspacesService.createWorkspace(body.name, body.url, user.id);
   }
 
