@@ -13,13 +13,13 @@ export class WorkspacesService {
     @InjectRepository(Workspaces)
     private workspacesRepository: Repository<Workspaces>,
     @InjectRepository(Channels)
-    private workspacesRepository: Repository<Channels>,
+    private channelsRepository: Repository<Channels>,
     @InjectRepository(WorkspaceMembers)
-    private workspacesRepository: Repository<WorkspWorkspaceMembersaces>,
+    private workspaceMembersRepository: Repository<WorkspWorkspaceMembersaces>,
     @InjectRepository(ChannelMembers)
-    private workspacesRepository: Repository<ChannelMembers>,
+    private channelMembersRepository: Repository<ChannelMembers>,
     @InjectRepository(Users)
-    private workspacesRepository: Repository<Users>,
+    private usersRepository: Repository<Users>,
   ) {}
 
   async findById(id: number) {
@@ -34,5 +34,23 @@ export class WorkspacesService {
     });
   }
 
-  async createWorkspace(name: string, url: string, myId: number) {}
+  async createWorkspace(name: string, url: string, myId: number) {
+    const workspace = new Workspaces();
+    workspace.name = name;
+    workspace.url = url;
+    workspace.OwnerId = myId;
+    const returned = await this.workspacesRepository.save(workspace);
+    const workspaceMember = new WorkspaceMembers();
+    workspaceMember.UserId = myId;
+    workspaceMember.WorkspaceId = returned.id;
+    await this.workspaceMembersRepository.save(workspaceMember);
+    const channel = new Channels();
+    channel.name = '일반';
+    channel.WorkspaceId = returned.id;
+    const channelReturned = await this.channelsRepository.save(channel);
+    const channelMember = new ChannelMembers();
+    channelMember.UserId = myId;
+    channelMember.ChannelId = channelReturned.id;
+    await this.channelMembersRepository.save(channelMember);
+  }
 }

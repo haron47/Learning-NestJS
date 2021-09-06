@@ -1,15 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { Workspaces } from 'src/entities/Workspaces';
 
-export class CreateWorkspaceDto {
-  @ApiProperty({
-    example: '슬리액트',
-    description: '워크스페이스명',
-  })
-  public workspace: string;
-
-  @ApiProperty({
-    example: 'sleact',
-    description: 'url 주소',
-  })
-  public url: string;
-}
+export class CreateWorkspaceDto extends PickType(Workspaces, ['name', 'url']) {}

@@ -16,6 +16,7 @@ import { DMs } from './DMs';
 import { Mentions } from './Mentions';
 import { WorkspaceMembers } from './WorkspaceMembers';
 import { Users } from './Users';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Index('name', ['name'], { unique: true })
 @Index('url', ['url'], { unique: true })
@@ -25,9 +26,17 @@ export class Workspaces {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @ApiProperty({
+    example: '슬리액트',
+    description: '워크스페이스명',
+  })
   @Column('varchar', { name: 'name', unique: true, length: 30 })
   name: string;
 
+  @ApiProperty({
+    example: 'sleact',
+    description: 'url 주소',
+  })
   @Column('varchar', { name: 'url', unique: true, length: 30 })
   url: string;
 

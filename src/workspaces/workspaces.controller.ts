@@ -26,11 +26,7 @@ export class WorkspacesController {
 
   @Post()
   createWorkspaces(@User() user: Users, @Body() body: CreateWorkspaceDto) {
-    return this.workspacesService.createWorkspace(
-      body.workspace,
-      body.url,
-      user.id,
-    );
+    return this.workspacesService.createWorkspace(body.name, body.url, user.id);
   }
 
   @Get('/:url/members')
