@@ -13,6 +13,7 @@ import { WorkspacesController } from './workspaces/workspaces.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/Users';
 import { AuthModule } from './auth/auth.module';
+import { WorkspacesModule } from './workspaces/workspaces.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRoot(),
     AuthModule,
     UsersModule,
+    WorkspacesModule,
   ],
   controllers: [
     AppController,
