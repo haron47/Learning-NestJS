@@ -18,7 +18,7 @@ import { ChannelsService } from './channels.service';
       Workspaces,
     ]),
   ],
-  controllers: [ChannelsController],
-  providers: [ChannelsService],
+  // controllers: [ChannelsController],
+  // providers: [ChannelsService],
 })
 export class ChannelsModule {}

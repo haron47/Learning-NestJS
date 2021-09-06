@@ -9,7 +9,8 @@ import { AuthService } from './auth.service';
 export class LocalSerializer extends PassportSerializer {
   constructor(
     private readonly authService: AuthService,
-    @InjectRepository(Users) private usersRepository: Repository<Users>,
+    @InjectRepository(Users)
+    private usersRepository: Repository<Users>,
   ) {
     super();
   }
