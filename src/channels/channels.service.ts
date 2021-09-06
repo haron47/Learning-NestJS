@@ -132,12 +132,7 @@ export class ChannelsService {
       .getMany();
   }
 
-  async createWorkspaceChannelChats(
-    url: string,
-    name: string,
-    content: string,
-    myId: number,
-  ) {
+  async createWorkspaceChannelChats({ url, name, content, myId }) {
     const channel = await this.channelsRepository
       .createQueryBuilder('channel')
       .innerJoin('channel.Workspace', 'workspace', 'workspace.url = :url', {
@@ -145,6 +140,9 @@ export class ChannelsService {
       })
       .where('channel.name = :name', { name })
       .getOne();
+    if (!channel) {
+      throw new NotFoundException('채널이 존재하지 않습니다.');
+    }
     const chats = new ChannelChats();
     chats.content = content;
     chats.UserId = myId;

@@ -20,31 +20,46 @@ export class WorkspacesController {
   constructor(private workspacesService: WorkspacesService) {}
 
   @Get()
-  getMyWorkspaces(@User() user: Users) {
+  async getMyWorkspaces(@User() user: Users) {
     return this.workspacesService.findMyWorkspaces(user.id);
   }
 
   @ApiOperation({ summary: '워크스페이스 만들기' })
   @Post()
   async createWorkspace(@User() user: Users, @Body() body: CreateWorkspaceDto) {
-    console.log(user);
     return this.workspacesService.createWorkspace(body.name, body.url, user.id);
   }
 
-  @Get('/:url/members')
-  getAllMembersFromWorkspace() {}
+  @ApiOperation({ summary: '워크스페이스 멤버 가져오기' })
+  @Get(':url/members')
+  async getWorkspaceMembers(@Param('url') url: string) {
+    return this.workspacesService.getWorkspaceMembers(url);
+  }
 
-  @Post('/:url/members')
-  inviteMembersToWorkspace() {}
+  @ApiOperation({ summary: '워크스페이스 멤버 초대하기' })
+  @Post(':url/members')
+  async createWorkspaceMembers(
+    @Param('url') url: string,
+    @Body('email') email,
+  ) {
+    return this.workspacesService.createWorkspaceMembers(url, email);
+  }
 
-  @Delete('/:url/members/:id')
-  kickMemberFromWorkspace() {}
+  @ApiOperation({ summary: '워크스페이스 특정멤버 가져오기' })
+  @Get(':url/members/:id')
+  async getWorkspaceMember(
+    @Param('url') url: string,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.workspacesService.getWorkspaceMember(url, id);
+  }
 
-  @Get('/:url/members/:id')
-  getMemberInfoInWorkspace() {}
-
-  @Get('/:url/users/:id')
-  DEPRECATED_getMemberInfoInWorkspace() {
-    this.getMemberInfoInWorkspace();
+  @ApiOperation({ summary: '워크스페이스 특정멤버 가져오기' })
+  @Get(':url/users/:id')
+  async getWorkspaceUser(
+    @Param('url') url: string,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.workspacesService.getWorkspaceMember(url, id);
   }
 }

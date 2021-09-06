@@ -104,12 +104,12 @@ export class ChannelsController {
     @Body('content') content,
     @User() user: Users,
   ) {
-    return this.channelsService.createWorkspaceChannelChats(
+    return this.channelsService.createWorkspaceChannelChats({
       url,
-      name,
       content,
-      user.id,
-    );
+      name,
+      myId: user.id,
+    });
   }
 
   @ApiOperation({ summary: '워크스페이스 특정 채널 이미지 업로드하기' })
