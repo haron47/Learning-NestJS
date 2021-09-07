@@ -7,6 +7,7 @@ import { Channels } from 'src/entities/Channels';
 import { Users } from 'src/entities/Users';
 import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
 import { Workspaces } from 'src/entities/Workspaces';
+import { EventsGateway } from 'src/events/events.gateway';
 import { MoreThan, Repository } from 'typeorm';
 
 @Injectable()
@@ -24,6 +25,7 @@ export class ChannelsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(ChannelChats)
     private channelChatsRepository: Repository<ChannelChats>,
+    private eventsGateway: EventsGateway,
   ) {}
   async findById(id: number) {
     return this.channelsRepository.findOne({ where: { id } });
@@ -145,8 +147,8 @@ export class ChannelsService {
 
     this.eventsGateway.server
       // .of(`/ws-${url}`)
-      .to(`/ws-${url}-${chatWithUser.ChannelId}`)
-      .emit('message', chatWithUser);
+      .to(`/ws-${url}-${savedChat.ChannelId}`)
+      .emit('message', savedChat);
   }
   async createWorkspaceChannelImages(
     url: string,
