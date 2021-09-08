@@ -6,10 +6,12 @@ import { HttpExceptionFilter } from './httpException.filter';
 import * as passport from 'passport';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import * as path from 'path';
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT || 3000;
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -23,6 +25,18 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
+  app.useStaticAssets(
+    process.env.NODE_ENV === 'production'
+      ? path.join(__dirname, '..', '..', 'uploads')
+      : path.join(__dirname, '..', 'uploads'),
+    {
+      prefix: '/uploads',
+    },
+  );
   app.use(cookieParser());
   app.use(
     session({

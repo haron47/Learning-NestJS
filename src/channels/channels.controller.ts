@@ -10,10 +10,11 @@ import {
   UploadedFiles,
   ParseIntPipe,
 } from '@nestjs/common';
+import * as fs from 'fs';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import fs from 'fs';
-import multer from 'multer';
+
+import * as multer from 'multer';
 import path from 'path';
 import { LoggedInGuard } from '../auth/logged-in.guard';
 import { Users } from '../entities/Users';
@@ -104,6 +105,7 @@ export class ChannelsController {
       user,
     });
   }
+
   @ApiOperation({ summary: '워크스페이스 특정 채널 이미지 업로드하기' })
   @UseInterceptors(
     FilesInterceptor('image', 10, {

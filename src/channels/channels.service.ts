@@ -17,8 +17,6 @@ export class ChannelsService {
     private workspacesRepository: Repository<Workspaces>,
     @InjectRepository(Channels)
     private channelsRepository: Repository<Channels>,
-    @InjectRepository(WorkspaceMembers)
-    private workspaceMembersRepository: Repository<WorkspaceMembers>,
     @InjectRepository(ChannelMembers)
     private channelMembersRepository: Repository<ChannelMembers>,
     @InjectRepository(Users)
@@ -27,9 +25,11 @@ export class ChannelsService {
     private channelChatsRepository: Repository<ChannelChats>,
     private eventsGateway: EventsGateway,
   ) {}
+
   async findById(id: number) {
     return this.channelsRepository.findOne({ where: { id } });
   }
+
   async getWorkspaceChannels(url: string, myId: number) {
     return this.channelsRepository
       .createQueryBuilder('channels')
@@ -47,6 +47,7 @@ export class ChannelsService {
       )
       .getMany();
   }
+
   async getWorkspaceChannel(url: string, name: string) {
     return this.channelsRepository
       .createQueryBuilder('channel')
@@ -56,6 +57,7 @@ export class ChannelsService {
       .where('channel.name = :name', { name })
       .getOne();
   }
+
   async createWorkspaceChannels(url: string, name: string, myId: number) {
     const workspace = await this.workspacesRepository.findOne({
       where: { url },
@@ -69,6 +71,7 @@ export class ChannelsService {
     channelMember.ChannelId = channelReturned.id;
     await this.channelMembersRepository.save(channelMember);
   }
+
   async getWorkspaceChannelMembers(url: string, name: string) {
     return this.usersRepository
       .createQueryBuilder('user')
@@ -80,6 +83,7 @@ export class ChannelsService {
       })
       .getMany();
   }
+
   async createWorkspaceChannelMembers(url, name, email) {
     const channel = await this.channelsRepository
       .createQueryBuilder('channel')
@@ -106,6 +110,7 @@ export class ChannelsService {
     channelMember.UserId = user.id;
     await this.channelMembersRepository.save(channelMember);
   }
+
   async getWorkspaceChannelChats(
     url: string,
     name: string,
@@ -126,6 +131,7 @@ export class ChannelsService {
       .skip(perPage * (page - 1))
       .getMany();
   }
+
   async createWorkspaceChannelChats({ url, name, content, user }) {
     const channel = await this.channelsRepository
       .createQueryBuilder('channel')
@@ -150,6 +156,7 @@ export class ChannelsService {
       .to(`/ws-${url}-${savedChat.ChannelId}`)
       .emit('message', savedChat);
   }
+
   async createWorkspaceChannelImages(
     url: string,
     name: string,
@@ -164,6 +171,9 @@ export class ChannelsService {
       })
       .where('channel.name = :name', { name })
       .getOne();
+    if (!channel) {
+      throw new NotFoundException('채널이 존재하지 않습니다.');
+    }
     for (let i = 0; i < files.length; i++) {
       const chats = new ChannelChats();
       chats.content = files[i].path;
