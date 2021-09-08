@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
+  Param,
   Post,
   Req,
   Res,
@@ -33,6 +34,15 @@ export class UsersController {
   @Get()
   getUsers(@User() user: JoinRequestDto) {
     return user || false;
+  }
+
+  @ApiResponse({
+    type: UserDto,
+  })
+  @ApiOperation({ summary: '이메일로 정보조회' })
+  @Get(':email')
+  async findByEmail(@Param() email: string) {
+    await this.usersService.findByEmail(email);
   }
 
   @UseGuards(new NotLoggedInGuard())
