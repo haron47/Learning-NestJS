@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import request from 'supertest';
-import passport from 'passport';
-import session from 'express-session';
-import { AppModule } from 'src/app.module';
+import * as request from 'supertest';
+import { AppModule } from './../src/app.module';
+import * as passport from 'passport';
+import * as session from 'express-session';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -29,22 +29,13 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/users/login (POST)', () => {
     return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
-
-  // superagent -> supertest
-  // axios -> moxios
-  it('/users/login (POST)', (done) => {
-    return request(app.getHttpServer())
-      .post('/api/users/login')
+      .get('/api/users/login')
       .send({
-        email: 'zerohch0@gmail.com',
-        password: 'nodejsbook',
+        email: 'test',
+        password: 'test',
       })
-      .expect(201, done);
+      .expect(200);
   });
 });

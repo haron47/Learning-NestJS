@@ -31,6 +31,7 @@
     "db:generate-migration": "npm run typeorm migration:generate -- -n"
   },
   "dependencies": {
+    "@eslint/eslintrc": "^1.0.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.0.1",
     "@nestjs/core": "^8.0.0",
