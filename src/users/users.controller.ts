@@ -19,6 +19,7 @@ import { UserDto } from 'src/common/dto/user.dto';
 import { UndefinedToNullInterceptor } from 'src/common/interceptors/undefinedToNull.interceptors';
 import { Users } from 'src/entities/Users';
 import { JoinRequestDto } from './dto/join.request.dto';
+import { ApiDocs } from './users.docs';
 import { UsersService } from './users.service';
 
 @UseInterceptors(UndefinedToNullInterceptor)
@@ -27,42 +28,26 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @ApiResponse({
-    type: UserDto,
-  })
-  @ApiOperation({ summary: '정보조회' })
+  @ApiDocs.getUsers('특정 사용자 조회')
   @Get()
   getUsers(@User() user: JoinRequestDto) {
     return user || false;
   }
 
-  @ApiResponse({
-    type: UserDto,
-  })
-  @ApiOperation({ summary: '이메일로 정보조회' })
+  @ApiDocs.findByEmail('이메일로 정보조회')
   @Get(':email')
   async findByEmail(@Param() email: string) {
     await this.usersService.findByEmail(email);
   }
 
   @UseGuards(new NotLoggedInGuard())
-  @ApiOperation({ summary: '회원가입' })
+  @ApiDocs.join('회원가입')
   @Post()
   async join(@Body() data: JoinRequestDto) {
     await this.usersService.join(data.email, data.nickname, data.password);
   }
 
-  @ApiResponse({
-    status: 200,
-    description: '성공',
-    type: UserDto,
-  })
-  @ApiResponse({
-    status: 500,
-    description: '실패',
-    type: UserDto,
-  })
-  @ApiOperation({ summary: '로그인' })
+  @ApiDocs.logIn('로그인')
   @UseGuards(new LocalAuthGuard())
   @Post('login')
   logIn(@User() user: Users) {
@@ -70,7 +55,7 @@ export class UsersController {
   }
 
   @UseGuards(new LoggedInGuard())
-  @ApiOperation({ summary: '로그아웃' })
+  @ApiDocs.logOut('로그아웃')
   @Post('logout')
   logOut(@User() user, @Res() res) {
     res.clearCookie('connect.sid', { httpOnly: true });
