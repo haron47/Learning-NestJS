@@ -24,6 +24,11 @@ export class UsersService {
   getUsers() {}
 
   async join(email: string, nickname: string, password: string) {
+    let isSuccess = true;
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
     const user = await this.usersRepository.findOne({ where: { email } });
     if (user) {
       throw new UnauthorizedException('이미 존재하는 사용자입니다');
@@ -42,7 +47,14 @@ export class UsersService {
       UserId: returned.id,
       ChannelId: 1,
     });
-    return true;
+      } catch (err) {
+          console.log(err);
+          await queryRunner.rollbackTransaction();
+          isSuccess = false;
+      } finally {
+          await queryRunner.release();
+          return isSuccess;
+        }
   }
 
   async findByEmail(email: string) {
