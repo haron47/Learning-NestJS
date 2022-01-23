@@ -1,0 +1,3 @@
+[submodule "nest-social-login"]
+	path = nest-social-login
+	url = https://github.com/hocaron/Social-Login.git
