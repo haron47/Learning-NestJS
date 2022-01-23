@@ -1,0 +1,3 @@
+[submodule "Social-Login"]
+	path = Social-Login
+	url = https://github.com/hocaron/Social-Login.git
