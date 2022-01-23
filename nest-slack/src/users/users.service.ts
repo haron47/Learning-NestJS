@@ -6,13 +6,15 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from '../entities/Users';
-import { Repository, Transaction } from 'typeorm';
+import { Repository, Transaction, Connection } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { WorkspaceMembers } from '../entities/WorkspaceMembers';
 import { ChannelMembers } from '../entities/ChannelMembers';
+
 @Injectable()
 export class UsersService {
   constructor(
+    private connection: Connection,
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
     @InjectRepository(WorkspaceMembers)
