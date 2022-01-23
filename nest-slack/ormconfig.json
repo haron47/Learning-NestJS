@@ -7,9 +7,9 @@
     "password": "root",
     "database": "sleact",
     "entities": ["dist/entities/*.{ts,js}"],
-    "migrations": ['./' + './src/migrations/*.ts'],
+    "migrations": ["./" , "./src/migrations/*.ts"],
     "cli" : {
-        migrationsDir: './' + './src/migrations',
+        "migrationsDir": ["./" , "./src/migrations"]
     },
     "synchronize": false,
     "logging": true
