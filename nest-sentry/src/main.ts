@@ -11,6 +11,6 @@ async function bootstrap() {
   });
   app.useGlobalInterceptors(new SentryInterceptor());
   app.useGlobalInterceptors(new WebhookInterceptor());
-  await app.listen(process.env.PORT);
+  await app.listen(3000);
 }
 bootstrap();
