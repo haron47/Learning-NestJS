@@ -5,8 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { captureException } from '@sentry/minimal';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, Observable, of } from 'rxjs';
 import { IncomingWebhook } from '@slack/client';
 
 @Injectable()
@@ -31,7 +30,7 @@ export class WebhookInterceptor implements NestInterceptor {
             },
           ],
         });
-        return null;
+        return of(error);
       }),
     );
   }
