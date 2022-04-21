@@ -9,7 +9,7 @@ export class MessageService {
       port: 6379,
     });
 
-    const message = "{ name: 'hocaron', job: 'backend-developer'};";
+    const message = '{"name" : "hocaron", "job" : "backend-developer"}';
     pub.publish('hocaron_channel', message);
   }
 }

@@ -12,7 +12,9 @@ export class MessageSubscriber implements OnApplicationBootstrap {
     const subscriber = createClient({ host: 'localhost', port: 6379 });
     subscriber.subscribe('hocaron_channel');
     subscriber.on('message', (channel, message) => {
-      console.log(message);
+      const data = JSON.parse(message);
+      console.log(data.name);
+      console.log(data.job);
     });
     return;
   }
